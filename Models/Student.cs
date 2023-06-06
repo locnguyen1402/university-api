@@ -20,6 +20,11 @@ public class Student : BaseEntity
     {
         this.EnrollmentDate = EnrollmentDate;
     }
+
+    public string GetFullName()
+    {
+        return $"{LastName} {FirstMidName}";
+    }
     public void UpdateName(string firstMidName, string lastName)
     {
         FirstMidName = firstMidName;

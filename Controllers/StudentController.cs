@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ using UniversityApi.Controllers.Requests;
 using UniversityApi.Controllers.Responses;
 using UniversityApi.Models;
 using UniversityApi.Repositories.IRepositories;
+using UniversityApi.Utils;
 
 namespace UniversityApi.Controllers;
 public class StudentController : BaseController
@@ -29,9 +32,20 @@ public class StudentController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetStudents()
+    public async Task<IActionResult> GetStudents([FromQuery] GetStudentsQuery queryInfo)
     {
-        return Ok();
+        var query = _studentRepo.Query.Include(s => s.Enrollments).AsQueryable();
+
+        if (!String.IsNullOrEmpty(queryInfo.keyword))
+        {
+            query = query.Where(s => s.FirstMidName.ToLower().Contains(queryInfo.keyword.ToLower()) || s.LastName.ToLower().Contains(queryInfo.keyword.ToLower()));
+        }
+
+        var list = await PaginationInfo.ToPaginatedListAsync(queryInfo.Page, queryInfo.PageSize, query);
+
+        await PaginationInfo.AttachPaginationInfoToHeader(queryInfo.Page, queryInfo.PageSize, query);
+
+        return Ok(_mapper.Map<List<StudentResponse>>(list));
     }
 
     [HttpGet("{id:guid}")]

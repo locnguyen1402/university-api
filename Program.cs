@@ -17,6 +17,8 @@ builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 
+builder.Services.AddHttpContextAccessor();
+
 // Add services to the container.
 
 builder.Services
