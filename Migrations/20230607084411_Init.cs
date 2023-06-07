@@ -15,8 +15,8 @@ namespace UniversityApi.Migrations
                 name: "Courses",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Credits = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -28,10 +28,10 @@ namespace UniversityApi.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FirstMidName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
+                    LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    FirstMidName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    EnrollmentDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,7 +42,7 @@ namespace UniversityApi.Migrations
                 name: "Enrollments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWSEQUENTIALID()"),
                     CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StudentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Grade = table.Column<int>(type: "int", nullable: true)
@@ -50,6 +50,7 @@ namespace UniversityApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Enrollments", x => x.Id);
+                    table.UniqueConstraint("AK_Enrollments_CourseId_StudentId", x => new { x.CourseId, x.StudentId });
                     table.ForeignKey(
                         name: "FK_Enrollments_Courses_CourseId",
                         column: x => x.CourseId,
@@ -63,11 +64,6 @@ namespace UniversityApi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Enrollments_CourseId",
-                table: "Enrollments",
-                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Enrollments_StudentId",
