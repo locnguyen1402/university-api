@@ -9,6 +9,9 @@ public class StudentConfiguration : BaseEntityConfiguration<Student>
     {
         base.Configure(builder);
 
+        builder.Property(e => e.EnrollmentDate)
+            .IsRequired(false);
+
         builder.Property(e => e.FirstMidName)
             .HasMaxLength(50)
             .IsRequired();
