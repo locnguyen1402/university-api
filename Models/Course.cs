@@ -21,9 +21,10 @@ public class Course : BaseEntity
         CourseAssignments = new List<CourseAssignment>();
     }
 
-    public Course(string Title, Credit Credits) : this(Title)
+    public Course(string Title, Credit Credits, Guid? DepartmentId = null) : this(Title)
     {
         this.Credits = Credits;
+        this.DepartmentId = DepartmentId;
     }
 
     public void UpdateTitle(string value)

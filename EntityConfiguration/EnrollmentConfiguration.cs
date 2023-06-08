@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using UniversityApi.Models;
 
@@ -9,6 +10,10 @@ public class EnrollmentConfiguration : BaseEntityConfiguration<Enrollment>
         base.Configure(builder);
 
         builder.HasAlternateKey(e => new { e.CourseId, e.StudentId });
+
+        builder.Property(e => e.Grade)
+            .HasConversion<string>()
+            .HasDefaultValueSql($"'{Grade.A}'");
 
         builder.HasOne(e => e.Student)
             .WithMany(e => e.Enrollments)

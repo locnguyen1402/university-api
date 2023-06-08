@@ -16,9 +16,10 @@ public class Enrollment : BaseEntity
 
     // for EFC
     public Enrollment() : base() { }
-    public Enrollment(Guid courseId, Guid studentId) : this()
+    public Enrollment(Guid courseId, Guid studentId, Grade? grade = null) : this()
     {
         CourseId = courseId;
         StudentId = studentId;
+        Grade = grade;
     }
 }
