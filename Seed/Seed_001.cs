@@ -37,13 +37,13 @@ public static class Seed_001
             {
                 var courses = new Course[]
                 {
-                    new Course("Chemistry",3),
-                    new Course("Microeconomics",3),
-                    new Course("Macroeconomics",3),
-                    new Course("Calculus",4),
-                    new Course("Trigonometry",4),
-                    new Course("Composition",3),
-                    new Course("Literature",4)
+                    new Course("Chemistry",Credit.T3),
+                    new Course("Microeconomics",Credit.T3),
+                    new Course("Macroeconomics",Credit.T3),
+                    new Course("Calculus",Credit.T4),
+                    new Course("Trigonometry",Credit.T4),
+                    new Course("Composition",Credit.T2),
+                    new Course("Literature",Credit.T5)
                 };
 
                 dbContext.Courses.AddRange(courses);
